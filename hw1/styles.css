@@ -1,0 +1,50 @@
+.plot-base{
+	width: 40%;
+	height: 320px;
+	margin-left: 8%;
+	margin-top: 5%
+}
+
+.plot-base rect {
+	fill: red;
+}
+
+.data-table{
+	border-collapse: collapse;
+}
+
+.data-table tr th, .data-table tr td{
+	border: 1px solid black;
+	width: 3em;
+	text-align: center;
+}
+#x-labels text{
+	text-anchor: middle;
+	font-size: 8px;
+}
+#x-labels line{
+	stroke: black;
+}
+#y-labels line{
+	stroke: black;
+}
+#y-labels text{
+	font-size: 8px;
+}
+#bars text, #line text, #area text{
+	text-anchor: middle;
+	font-size: 8px;
+}
+#xGrid line, #yGrid line{
+	stroke: black;
+}
+.area-chart polygon{
+	fill: red;
+	opacity: 0.5;
+}
+.line-chart polyline{
+	fill: none;
+	stroke: red;
+	stroke-width: 3;
+	opacity: 0.5;
+}
