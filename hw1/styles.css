@@ -1,4 +1,4 @@
-.plot-base{
+.plot-base, .line-chart, .area-chart, .scatter-chart{
 	width: 40%;
 	height: 320px;
 	margin-left: 8%;
@@ -31,20 +31,27 @@
 #y-labels text{
 	font-size: 8px;
 }
-#bars text, #line text, #area text{
+#x-bars text, #y-bars text, #area text{
 	text-anchor: middle;
 	font-size: 8px;
 }
-#xGrid line, #yGrid line{
-	stroke: black;
+#x-bars rect, #y-bars rect{
+	stroke: white;
+	stroke-width: 2px;
 }
-.area-chart polygon{
-	fill: red;
-	opacity: 0.5;
-}
-.line-chart polyline{
+.line-chart path, .line-chart line {
 	fill: none;
 	stroke: red;
 	stroke-width: 3;
-	opacity: 0.5;
+	opacity: 0.75;
+}
+.area-chart path {
+	fill: red;
+	stroke: red;
+	stroke-width: 3;
+	opacity: 0.6;
+}
+
+#xGrid line, #yGrid line{
+	stroke: black;
 }
