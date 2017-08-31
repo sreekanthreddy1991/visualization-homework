@@ -54,3 +54,7 @@
 h3, h4 {
 	text-align: center;
 }
+#axes-box{
+	fill: none;
+	stroke: black;
+}
