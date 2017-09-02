@@ -3,7 +3,68 @@
 <head>
   <meta charset="UTF-8">
   <title>Home work 1</title>
-  <link rel="stylesheet" href="styles.css">
+  <style type="text/css">
+    .plot-base, .line-chart, .area-chart, .scatter-chart{
+      width: 30%;
+      height: 320px;
+      margin-left: 17%;
+    }
+
+    .plot-base rect {
+      fill: red;
+    }
+
+    .data-table{
+      border-collapse: collapse;
+    }
+
+    .data-table tr th, .data-table tr td{
+      border: 1px solid black;
+      width: 3em;
+      text-align: center;
+    }
+    #x-labels text{
+      text-anchor: middle;
+      font-size: 8px;
+    }
+    #x-labels line, #y-labels line{
+      stroke: black;
+    }
+    #y-labels text{
+      font-size: 8px;
+    }
+    #x-bars text, #y-bars text, #area text{
+      text-anchor: middle;
+      font-size: 8px;
+    }
+    #x-bars rect, #y-bars rect{
+      stroke: white;
+      stroke-width: 2px;
+    }
+    .line-chart path, .line-chart line {
+      fill: none;
+      stroke: red;
+      stroke-width: 3;
+      opacity: 0.75;
+    }
+    .area-chart path {
+      fill: red;
+      stroke: red;
+      stroke-width: 3;
+      opacity: 0.6;
+    }
+
+    #xGrid line, #yGrid line{
+      stroke: black;
+    }
+    h3, h4 {
+      text-align: center;
+    }
+    #axes-box{
+      fill: none;
+      stroke: black;
+    }
+  </style>
 </head>
 <body>
 <h4>
