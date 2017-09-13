@@ -95,7 +95,8 @@ function update(error, data) {
                         .attr("height", function(d,i){
                             return aScale(d.a);
                         })
-                        .style("fill", "steelblue"); 
+                        .style("fill", "steelblue")
+                        .attr("opacity", 0); 
 
     // handle exit selection to remove extra bars, in case of random subset
     barsA.exit()
@@ -110,7 +111,7 @@ function update(error, data) {
 
     //Apply transitions to new selection containing all rectangles
     barsA.transition()
-         .duration(1000)
+         .duration(1500)
          .attr("x", function(d,i){
             return iScale(i+1);
          })
@@ -118,7 +119,8 @@ function update(error, data) {
          .attr("width", 20)
          .attr("height", function(d,i){
             return aScale(d.a);
-         });
+         })
+         .attr("opacity", 1);
 
     // TODO: Select and update the 'b' bar chart bars
     let barChartB = d3.select("#barChartB");
@@ -136,7 +138,8 @@ function update(error, data) {
                         .attr("height", function(d,i){
                             return aScale(d.b);
                         })
-                        .style("fill", "steelblue"); 
+                        .style("fill", "steelblue")
+                        .attr("opacity", 0); 
 
     // handle exit selection to remove extra bars, in case of random subset
     barsB.exit()
@@ -151,7 +154,7 @@ function update(error, data) {
 
     //Apply transitions to new selection containing all rectangles
     barsB.transition()
-         .duration(1000)
+         .duration(1500)
          .attr("x", function(d,i){
             return iScale(i+1);
          })
@@ -159,7 +162,8 @@ function update(error, data) {
          .attr("width", 20)
          .attr("height", function(d,i){
             return aScale(d.b);
-         });
+         })
+         .attr("opacity", 1);
     
 
     // TODO: Select and update the 'a' line chart path using this line generator
@@ -172,7 +176,9 @@ function update(error, data) {
     lineA.select("path")
          .transition()
          .duration(1000)
-         .attr("d", aLineGenerator(data));    
+         .attr("opacity", 0)
+         .attr("d", aLineGenerator(data))
+         .attr("opacity", 1);    
 
     // TODO: Select and update the 'b' line chart path (create your own generator)
 
