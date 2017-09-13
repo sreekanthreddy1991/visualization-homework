@@ -174,7 +174,7 @@ function update(error, data) {
          .duration(500)
          .attr("opacity", 0.3)
          .transition()
-         .duration(1000)
+         .duration(500)
          .attr("d", aLineGenerator(data))
          .attr("opacity", 1);    
 
@@ -190,7 +190,7 @@ function update(error, data) {
          .duration(500)
          .attr("opacity", 0.3)
          .transition()
-         .duration(1000)
+         .duration(500)
          .attr("d", bLineGenerator(data))
          .attr("opacity", 1);
 
@@ -280,22 +280,6 @@ function update(error, data) {
     circles.on("mouseout", function(){
         circles.selectAll("title").remove();
     })
-
-    barsA.on("mouseover", function(d, i){
-        barsA.append("title").text(d.a);
-    });
-
-    barsA.on("mouseout", function(d, i){
-        barsA.selectAll("title").remove();
-    });
-
-    barsB.on("mouseover", function(d, i){
-        barsB.append("title").text(d.b);
-    });
-
-    barsB.on("mouseout", function(d, i){
-        barsB.selectAll("title").remove();
-    });
 
 }
 
