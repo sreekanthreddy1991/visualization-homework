@@ -92,9 +92,7 @@ function update(error, data) {
                         })
                         .attr("y", 0)
                         .attr("width", 20)
-                        .attr("height", function(d,i){
-                            return aScale(d.a);
-                        })
+                        .attr("height", 0)
                         .style("fill", "steelblue")
                         .attr("opacity", 0); 
 
@@ -135,9 +133,7 @@ function update(error, data) {
                         })
                         .attr("y", 0)
                         .attr("width", 20)
-                        .attr("height", function(d,i){
-                            return aScale(d.b);
-                        })
+                        .attr("height", 0)
                         .style("fill", "steelblue")
                         .attr("opacity", 0); 
 
@@ -175,8 +171,10 @@ function update(error, data) {
     let lineA = d3.select("#lineChartA");
     lineA.select("path")
          .transition()
+         .duration(500)
+         .attr("opacity", 0.3)
+         .transition()
          .duration(1000)
-         .attr("opacity", 0)
          .attr("d", aLineGenerator(data))
          .attr("opacity", 1);    
 
@@ -189,8 +187,12 @@ function update(error, data) {
     let lineB = d3.select("#lineChartB");
     lineB.select("path")
          .transition()
+         .duration(500)
+         .attr("opacity", 0.3)
+         .transition()
          .duration(1000)
-         .attr("d", bLineGenerator(data));
+         .attr("d", bLineGenerator(data))
+         .attr("opacity", 1);
 
     // TODO: Select and update the 'a' area chart path using this area generator
     let aAreaGenerator = d3.area()
@@ -232,12 +234,7 @@ function update(error, data) {
                             return bScale(d.b+10);
                         })
                         .attr("r", 5)
-                        .style("fill", "steelblue")
-                        .on("click", function(d){
-                            console.log(d.a, d.b);
-                        })
-                        .append("svg:title")
-                        .text(function(d, i){return "["+d.a+","+d.b+"]"});; 
+                        .style("fill", "steelblue"); 
 
     // handle exit selection to remove extra circles, in case of random subset
     circles.exit()
@@ -260,18 +257,6 @@ function update(error, data) {
             return bScale(d.b);
          })
          .attr("r", 5);
-
-    circles.on("click", function(d, i){
-        let coords = d3.mouse(this);
-        console.log(d.a +", "+ d.b);
-    })
-
-    // let titles = scatterplot.selectAll("title").data(data);
-    // titles.enter().append("title").attr("x", function(d,i){
-    //         return aScale(d.a);
-    //      }).attr("y", function(d,i){
-    //         return bScale(d.b);
-    //      }).text(function(d, i){return "["+d.a+","+d.b+"]"});
         
 
     // ****** TODO: PART IV ******
@@ -281,6 +266,11 @@ function update(error, data) {
         barCharts[i].addEventListener('mouseover', mouseoverBars, false);
         barCharts[i].addEventListener('mouseout', mouseoutBars, false);
     }
+
+    circles.on("click", function(d, i){
+        let coords = d3.mouse(this);
+        console.log(d.a +", "+ d.b);
+    });
 
     circles.on("mouseover", function(d, i){
         let coords = d3.mouse(this);
