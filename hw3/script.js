@@ -157,7 +157,7 @@ function update(error, data) {
          .attr("y", 0)
          .attr("width", 20)
          .attr("height", function(d,i){
-            return aScale(d.b);
+            return bScale(d.b);
          })
          .attr("opacity", 1);
     
