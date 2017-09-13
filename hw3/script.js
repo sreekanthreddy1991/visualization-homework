@@ -255,9 +255,9 @@ function update(error, data) {
          })
          .attr("r", 5);
 
-    scatterplot.on("click", function(){
+    circles.on("click", function(d, i){
         let coords = d3.mouse(this);
-        console.log(aScale.invert(coords[0]), bScale.invert(coords[1]));
+        console.log(d.a +", "+ d.b);
     })
 
     // let titles = scatterplot.selectAll("title").data(data);
@@ -276,14 +276,30 @@ function update(error, data) {
         barCharts[i].addEventListener('mouseout', mouseoutBars, false);
     }
 
-    circles.on("mouseover", function(){
+    circles.on("mouseover", function(d, i){
         let coords = d3.mouse(this);
-        circles.append("title").text(aScale.invert(coords[0]).toFixed(2) + "," + bScale.invert(coords[1]).toFixed(2));
+        circles.append("title").text(d.a + ", "+ d.b);
     });
 
     circles.on("mouseout", function(){
         circles.selectAll("title").remove();
     })
+
+    barsA.on("mouseover", function(d, i){
+        barsA.append("title").text(d.a);
+    });
+
+    barsA.on("mouseout", function(d, i){
+        barsA.selectAll("title").remove();
+    });
+
+    barsB.on("mouseover", function(d, i){
+        barsB.append("title").text(d.b);
+    });
+
+    barsB.on("mouseout", function(d, i){
+        barsB.selectAll("title").remove();
+    });
 
 }
 
