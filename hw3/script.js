@@ -261,11 +261,22 @@ function update(error, data) {
 
     // ****** TODO: PART IV ******
     // add events on bars to change colors on mouse over
-    var barCharts = document.getElementsByClassName("barChart");
-    for (var i = 0; i < barCharts.length; i++) {
-        barCharts[i].addEventListener('mouseover', mouseoverBars, false);
-        barCharts[i].addEventListener('mouseout', mouseoutBars, false);
-    }
+
+    barsA.on("mouseover", function(d, i){
+        d3.select(this).attr("fill", "green");
+    });
+
+    barsB.on("mouseover", function(d, i){
+        d3.select(this).attr("fill", "green");
+    });
+
+    barsA.on("mouseout", function(){
+        d3.select(this).attr("fill", "steelblue");
+    })
+
+    barsB.on("mouseout", function(){
+        d3.select(this).attr("fill", "steelblue");
+    })
 
     circles.on("click", function(d, i){
         let coords = d3.mouse(this);
