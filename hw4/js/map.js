@@ -22,10 +22,10 @@ class Map {
         // d3 selection and .classed to set these classes on and off here.
         d3.select("#map")
           .selectAll("path")
-          .classed("countries", true)
           .classed("host", false)
           .classed("gold", false)
-          .classed("silver", false);
+          .classed("silver", false)
+          .classed("team", false);
         d3.select("#points")
           .selectAll("circle")
           .remove();

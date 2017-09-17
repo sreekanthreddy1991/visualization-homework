@@ -27,11 +27,16 @@ class InfoPanel {
         let ul = d3.select("#teams");
         let li = ul.selectAll('li').data(oneWorldCup.teams_names);
         
-        li.enter()
+        let newList = li.enter()
           .append('li')
           .text(d => d);
 
         li.exit().remove();
+
+        li = newList.merge(li);
+        li.transition()
+          .duration(2000)
+          .text(d => d);
         //Set Labels
 
     }
