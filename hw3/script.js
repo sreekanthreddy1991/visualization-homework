@@ -263,19 +263,19 @@ function update(error, data) {
     // add events on bars to change colors on mouse over
 
     barsA.on("mouseover", function(d, i){
-        d3.select(this).attr("fill", "green");
+        d3.select(this).style("fill", "green");
     });
 
     barsB.on("mouseover", function(d, i){
-        d3.select(this).attr("fill", "green");
+        d3.select(this).style("fill", "green");
     });
 
     barsA.on("mouseout", function(){
-        d3.select(this).attr("fill", "steelblue");
+        d3.select(this).style("fill", "steelblue");
     })
 
     barsB.on("mouseout", function(){
-        d3.select(this).attr("fill", "steelblue");
+        d3.select(this).style("fill", "steelblue");
     })
 
     circles.on("click", function(d, i){
