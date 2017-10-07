@@ -31,7 +31,6 @@ class BarChart {
         let data = this.allData;
         let map = this.worldMap;
         let infoSection = this.infoPanel;
-        let barWidth = width/data.length ;
         let minYear = d3.min(this.allData, d => parseInt(d.YEAR));
         let maxYear = d3.max(this.allData, d => parseInt(d.YEAR));
         let xScale = d3.scaleLinear()
@@ -51,7 +50,7 @@ class BarChart {
                 // notice the three interpolation points
                 .domain([yMin, yMax])
                 // each color matches to an interpolation point
-                .range(["lightgray","steelblue"]);
+                .range(["steelblue","#000080"]);
 
         // Create the axes (hint: use #xAxis and #yAxis)
         let xAxis = d3.axisBottom(xScale).tickFormat(function(d){

@@ -20,7 +20,7 @@ d3.csv("data/fifa-world-cup.csv", function (error, allData) {
 
     /* Create infoPanel, barChart and Map objects  */
     let infoPanel = new InfoPanel();
-    let worldMap = new Map();
+    let worldMap = new Map(infoPanel);
 
     /* DATA LOADING */
     //Load in json data to make map

@@ -3,7 +3,8 @@ class Map {
     /**
      * Creates a Map Object
      */
-    constructor() {
+    constructor(infoPanel) {
+        this.infoPanel = infoPanel;
         this.projection = d3.geoConicConformal().scale(150).translate([400, 350]);
 
     }
@@ -97,6 +98,7 @@ class Map {
         // updateMap() will need it to add the winner/runner_up markers.)
 
         // ******* TODO: PART IV *******
+        let infoSection = this.infoPanel;
         let geoPath = d3.geoPath().projection(this.projection);
         d3.select("#map")
           .selectAll("path")
@@ -105,7 +107,10 @@ class Map {
           .append('path')
           .classed("countries", true)
           .attr("id", d => d.id)
-          .attr("d", geoPath);
+          .attr("d", geoPath)
+          .on("click", function(d){
+            infoSection.listYears(d.id, barChart.allData);
+        });
 
         var graticule = d3.geoGraticule();
 

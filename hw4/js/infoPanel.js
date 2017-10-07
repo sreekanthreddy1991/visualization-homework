@@ -41,4 +41,39 @@ class InfoPanel {
 
     }
 
+    updateCountryInfo(selectedCountry, years){
+        d3.select("#selected-country").text(selectedCountry);
+        console.log(selectedCountry);
+        console.log(years);
+        let ul = d3.select("#years");
+        let li = ul.selectAll('li').data(years);
+        
+        let newList = li.enter()
+          .append('li')
+          .text(d => d);
+
+        li.exit().remove();
+
+        li = newList.merge(li);
+        li.transition()
+          .duration(2000)
+          .text(d => d);
+    }
+
+    listYears(countryId, fifaData){
+        let years = [];
+        let selectedCountry = "";
+        for (var i = 0; i < fifaData.length; i++) {
+            for (var j = 0; j < fifaData[i].teams_iso.length; j++) {
+                if(countryId === fifaData[i].teams_iso[j]){
+                    years.push(fifaData[i].year);
+                    selectedCountry = fifaData[i].teams_iso[j];
+                    break;
+                }
+            }
+        }
+        d3.select("#country-details").style("display", "block");
+        this.updateCountryInfo(selectedCountry, years);
+    }
+
 }
