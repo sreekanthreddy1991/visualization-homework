@@ -45,6 +45,40 @@ class Table {
 
         /**For goal Column. Use colors '#cb181d', '#034e7b'  for the range.*/
         this.goalColorScale = null; 
+
+        this.nameAsc = true;
+        this.goalAsc = false;
+        this.resultAsc = false;
+        this.winAsc = false;
+        this.lostAsc = false;
+        this.totalGamesAsc = false;
+        let self = this;
+        d3.select("#nameHeader")
+          .on("click", function(){
+            self.sortName();
+          });
+
+        d3.select("#goals")
+          .on("click", function(){
+            self.sortGoals();
+          });
+
+        d3.select("#resultsHeader")
+          .on("click", function(){
+            self.sortResults();
+          });
+        d3.select("#winsHeader")
+          .on("click", function(){
+            self.sortWins();
+          });
+        d3.select("#lossesHeader")
+          .on("click", function(){
+            self.sortLosses();
+          });
+        d3.select("#totalGamesHeader")
+          .on("click", function(){
+            self.sortTotalGames();
+          });
     }
 
 
@@ -139,6 +173,13 @@ class Table {
                  .append("tr");
         tableRows.exit().remove();
         tableRows = tableRows.merge(newTableRows);
+        tableRows.on("mouseover", function(d){
+            that.tree.updateTree(d);
+        });
+
+        tableRows.on("mouseout", function(d){
+            that.tree.clearTree();
+        })
 
         //Append th elements for the Team Names
         let th = tableRows.selectAll("th").data(function(d, i){
@@ -170,7 +211,6 @@ class Table {
             result.push({type: d.value.type, vis: "bar", value: parseInt(d.value.Wins)});
             result.push({type: d.value.type, vis: "bar", value: parseInt(d.value.Losses)});
             result.push({type: d.value.type, vis: "bar", value: parseInt(d.value.TotalGames)});
-            console.log(result[0].value.delta);
             return result;
         });
         let newTds = tds.enter().append("td");
@@ -217,18 +257,18 @@ class Table {
                 }
                 return 10;
                })
-               .attr("width", function(d){
+               .attr("width", function(d, i){
                 if(d.value.delta === 0){
                     return 0;
                 }
                 let width = goalScale(Math.abs(d.value.delta))-that.cell.buffer;
                 if(d.type==="game"){
-                    return width-10;
+                    return width > 10 ? width-10 : 0;
                 }
-                return width;
+                return Math.abs(width);
                })
                .style("fill", function(d){
-                return d.value.delta > 0 ? "blue" : "red";
+                return d.value.delta > 0 ? "#364e74" : "#be2714";
                });
         let goalWinCircle = goalSvg.selectAll(".goalMade").data(function(d){
           return d3.select(this).data();  
@@ -239,16 +279,13 @@ class Table {
                })
                .attr("cy", 10)
                .classed("goalCircle", true)
-               .classed("goalMade", true)
                .style("fill", function(d){
                 if(d.type==="game"){
                     return "none";
                 }
-                return "blue";
+                return "#364e74";
                })
-               .style("stroke", function(d){
-                return "blue";
-               });
+               .classed("goalMade", true);
         let goalLostCircle = goalSvg.selectAll(".goalConceded").data(function(d){
           return d3.select(this).data();  
         })
@@ -258,23 +295,22 @@ class Table {
                })
                .attr("cy", 10)
                .classed("goalCircle", true)
-               .classed("goalConceded", true)
                .style("fill", function(d){
+                if(d.type==="game"){
+                    return "none";
+                }
                 if(d.value.delta == 0){
                     //Set the color of all games that tied to light gray
                     return "grey";
                 }
-                if(d.type==="game"){
-                    return "none";
-                }
-                return "red";
+                return "#be2714";
                })
+               .classed("goalConceded", true)
                .style("stroke", function(d){
                 if(d.value.delta == 0){
                     //Set the color of all games that tied to light gray
                     return "grey";
                 }
-                return "red";
                });
 
 
@@ -354,25 +390,23 @@ class Table {
     updateList(i) {
         // ******* TODO: PART IV *******
         let team = this.tableElements[i];
-        let nextTeam = this.tableElements[i+1];
-        if(nextTeam!==undefined && nextTeam.value.type === "game"){
-            this.collapseList();
-            return;
-        }
         //Only update list for aggregate clicks, not game clicks
         if(team.type === "game"){
             return;
         }
-        let teamData = this.tableElements.slice();
         let games = team.value.games;
+        let nextTeam = this.tableElements[i+1];
+        let teamData = this.tableElements.slice();
         this.tableElements = [];
-        Array.prototype.push.apply(this.tableElements, teamData.slice(0, i+1));
-        Array.prototype.push.apply(this.tableElements, games);
-        Array.prototype.push.apply(this.tableElements, teamData.slice(i+1));
+        if(nextTeam!==undefined && nextTeam.value.type === "game"){
+            Array.prototype.push.apply(this.tableElements, teamData.slice(0, i+1));
+            Array.prototype.push.apply(this.tableElements, teamData.slice(i+games.length+1));
+        } else {
+            Array.prototype.push.apply(this.tableElements, teamData.slice(0, i+1));
+            Array.prototype.push.apply(this.tableElements, games);
+            Array.prototype.push.apply(this.tableElements, teamData.slice(i+1));
+        }
         this.updateTable();
-
-
-        
     }
 
     /**
@@ -385,6 +419,84 @@ class Table {
         this.tableElements = this.teamData;
         this.updateTable();
 
+    }
+
+    sortName(){
+        let self = this;
+        self.teamData.sort(function(a, b){
+            if(self.nameAsc){
+                return d3.ascending(a.key, b.key);
+            } else {
+                return d3.descending(a.key, b.key);
+            }
+        });
+        self.nameAsc = !self.nameAsc;
+        self.collapseList();
+    }
+
+    sortGoals(){
+        let self = this;
+        self.teamData.sort(function(a, b){
+            if(self.goalAsc){
+                return d3.ascending(a.value[self.goalsMadeHeader], b.value[self.goalsMadeHeader]);
+            } else {
+                return d3.descending(a.value[self.goalsMadeHeader], b.value[self.goalsMadeHeader]);
+            }
+        });
+        self.goalAsc = !self.goalAsc;
+        self.collapseList();
+    }
+
+    sortResults(){
+        let self = this;
+        self.teamData.sort(function(a, b){
+            if(self.resultAsc){
+                return d3.ascending(a.value.Result.ranking, b.value.Result.ranking);
+            } else {
+                return d3.descending(a.value.Result.ranking, b.value.Result.ranking);
+            }
+        });
+        self.resultAsc = !self.resultAsc;
+        self.collapseList();
+    }
+
+    sortWins(){
+        let self = this;
+        self.teamData.sort(function(a, b){
+            if(self.winAsc){
+                return d3.ascending(a.value.Wins, b.value.Wins);
+            } else {
+                return d3.descending(a.value.Wins, b.value.Wins);
+            }
+        });
+        self.winAsc = !self.winAsc;
+        self.collapseList();
+    }
+
+    sortLosses(){
+        let self = this;
+        self.teamData.sort(function(a, b){
+            if(self.lostAsc){
+                return d3.ascending(a.value.Losses, b.value.Losses);
+            } else {
+                return d3.descending(a.value.Losses, b.value.Losses);
+            }
+        });
+        self.lostAsc = !self.lostAsc;
+        self.collapseList();
+    }
+
+    sortTotalGames(){
+        let self = this;
+        self.teamData.sort(function(a, b){
+            if(self.totalGamesAsc){
+                return d3.ascending(a.value.TotalGames, b.value.TotalGames);
+            } else {
+                return d3.descending(a.value.TotalGames, b.value.TotalGames);
+            }
+        });
+        self.totalGamesAsc = !self.totalGamesAsc;
+        self.collapseList();
     }
 
 

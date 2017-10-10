@@ -116,7 +116,7 @@ header {
 }
 
 .goalConceded{
-    stroke: #364e74;
+    stroke: #be2714;
 }
 
 
@@ -158,6 +158,9 @@ header {
     width: 650px;
     padding: 0.5em;
     float: left;
+}
+#tree-view{
+    margin-left: 6%;
 }
 
 

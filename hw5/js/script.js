@@ -40,25 +40,32 @@ d3.json('data/fifa-matches.json',function(error,data){
 //      * Loads in the tree information from fifa-tree.csv and calls createTree(csvData) to render the tree.
 //      *
 //      */
-    console.log(matchesCSV);
-    teamData = d3.nest()
+    let teamData = d3.nest()
                      .key(d => d.Team)
-                     .rollup(function(leaves){
-                        console.log(leaves.length);
+                     .rollup(function (leaves) {
+                        return {Wins:d3.sum(leaves,function(l){
+                                    return l.Wins
+                                })
+                        }
                      })
                      .entries(matchesCSV);
      d3.csv("data/fifa-tree.csv", function (error, treeCSV) {
 
 //     // ******* TODO: PART I *******
         //Create a unique "id" field for each game
-        console.log(treeCSV);
         treeCSV.forEach(function (d, i) {
             d.id = d.Team + d.Opponent + i;
         });
 
         //Create Tree Object
-        let tree = new Tree();
-        tree.createTree(treeCSV);
+        // let tree = new Tree();
+        // tree.createTree(treeCSV);
+
+        // //Create Table Object and pass in reference to tree object (for hover linking)
+        // let table = new Table(matchesJson,tree);
+
+        // table.createTable();
+        // table.updateTable();
         
 
      });
