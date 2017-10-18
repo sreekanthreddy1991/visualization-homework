@@ -229,17 +229,21 @@ class Table {
         });
         goalSvg = goalSvg.enter().append("svg").merge(goalSvg);
 
-
         goalSvg.style("height", this.cell.height)
                .style("width", 2*this.cell.width+this.cell.buffer);
+
+        let goalGroup = goalSvg.selectAll("g").data(function(d){
+                                                            return d3.select(this).data();
+                                                        });
+        goalGroup =goalGroup.enter().append("g").merge(goalGroup);
         
         //Create diagrams in the goals column
-        let goalRect = goalSvg.selectAll("rect").data(function(d){
+        let goalRect = goalGroup.selectAll("rect").data(function(d){
             return d3.select(this).data();
         })
         goalRect.enter().append("rect").merge(goalRect).classed("goalBar", true)
                .attr("x", function(d){
-                let val = d.value.made > d.value.conceded ? goalScale(d.value.conceded) : goalScale(d.value.made);;
+                let val = d.value.made > d.value.conceded ? goalScale(d.value.conceded) : goalScale(d.value.made);
                 if(d.type==="game"){
                     return val;;
                 }
@@ -270,7 +274,7 @@ class Table {
                .style("fill", function(d){
                 return d.value.delta > 0 ? "#364e74" : "#be2714";
                });
-        let goalWinCircle = goalSvg.selectAll(".goalMade").data(function(d){
+        let goalWinCircle = goalGroup.selectAll(".goalMade").data(function(d){
           return d3.select(this).data();  
         })
         goalWinCircle.enter().append("circle").merge(goalWinCircle)
@@ -286,7 +290,7 @@ class Table {
                 return "#364e74";
                })
                .classed("goalMade", true);
-        let goalLostCircle = goalSvg.selectAll(".goalConceded").data(function(d){
+        let goalLostCircle = goalGroup.selectAll(".goalConceded").data(function(d){
           return d3.select(this).data();  
         })
         goalLostCircle.enter().append("circle").merge(goalLostCircle)
@@ -312,6 +316,13 @@ class Table {
                     return "grey";
                 }
                });
+        goalGroup.on("mouseover", function(d){
+          d3.select(this).append("title").text(d.value.made + "-" +d.value.conceded);
+        });
+
+        goalGroup.on("mouseout", function(d){
+          d3.select(this).selectAll("title").remove();
+        });
 
 
         let resultTds = tds.filter(function (d) {

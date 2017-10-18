@@ -55,7 +55,7 @@ class Tree {
         let nodeEnter = node.enter()
                             .append('g')
                             .attr('class', function(d){
-                                return d.data.data.Wins === "1" ? "winner" : "looser";
+                                return d.data.data.Wins === "1" ? "winner" : "loser";
                             })
                             .classed('node', true);
         nodeEnter.append('circle')
