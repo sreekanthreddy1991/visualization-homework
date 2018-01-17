@@ -10,12 +10,13 @@ class YearChart {
      * @param electionInfo instance of ElectionInfo
      * @param electionWinners data corresponding to the winning parties over mutiple election years
      */
-    constructor (electoralVoteChart, tileChart, votePercentageChart, electionWinners) {
+    constructor (electoralVoteChart, tileChart, votePercentageChart, shiftChart, electionWinners) {
 
         //Creating YearChart instance
         this.electoralVoteChart = electoralVoteChart;
         this.tileChart = tileChart;
         this.votePercentageChart = votePercentageChart;
+        this.shiftChart = shiftChart;
         // the data
         this.electionWinners = electionWinners;
         
@@ -81,6 +82,25 @@ class YearChart {
             .attr("y2", 50)
             .style("stroke-dasharray","2,2")//dashed array for line
             .classed("lineChart", true);
+
+    let brush = d3.brushX().extent([[0,35],[this.svgWidth,65]]).on("end", function(){
+        let selected = d3.event.selection;
+        if(selected!==null){
+            let min  = selected[0];
+        let max  = selected[1];
+        let selectedYears = []
+        for (var i = 0; i < self.electionWinners.length; i++) {
+            // selecting the states even if half portion is inside brush selection
+            let position = (i+1)*75;
+            if(position>= min && position<=max){
+                selectedYears.push(self.electionWinners[i].YEAR);
+            }
+        }
+        self.shiftChart.updateYears(selectedYears);
+        }
+        
+    });
+    this.svg.append("g").attr("class", "brush").call(brush);
 
     // Create the chart by adding circle elements representing each election year
     //The circles should be colored based on the winning party for that year

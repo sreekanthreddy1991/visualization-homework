@@ -17,8 +17,7 @@ class ShiftChart {
      
      // ******* TODO: PART V *******
     //Display the names of selected states in a list
-    console.log("here");
-    let li = this.divShiftChart.selectAll('li').data(selectedStates);
+    let li = d3.select("#stateList").selectAll('li').data(selectedStates);
     let newLi = li.enter().append('li');
     li.exit().remove();
     li = newLi.merge(li);
@@ -39,6 +38,16 @@ class ShiftChart {
     //Update the visualization on brush events over the Year chart and Electoral Vote Chart
 
     };
+
+    updateYears(selectedYears){
+        let li = d3.select("#yearList").selectAll('li').data(selectedYears);
+        let newLi = li.enter().append('li');
+        li.exit().remove();
+        li = newLi.merge(li);
+        li.transition()
+            .duration(1000)
+            .text(d => d);
+    }
 
 
 }

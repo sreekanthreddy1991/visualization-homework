@@ -1,0 +1,7 @@
+Bar Chart:
+
+I consider the grouped bar charts to be best to visualize the shift of states politically. Data is very nicely represented and we can clearly see the shift. Also we can show the number of votes won be each party by interacting with the graph. For the given design, we have to click on each year to see the shift, in this grouped chart we can visualize the shift by selecting multiple years at a time.
+
+Bubble Chart: 
+
+This also clearly represents the shift over time. But the disadvantage is that, two state may overlap if the winning percentage is same. In that case it is a little bit confusing and takes time to deduce the data.

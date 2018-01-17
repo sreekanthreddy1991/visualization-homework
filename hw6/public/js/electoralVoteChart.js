@@ -204,18 +204,20 @@ class ElectoralVoteChart {
     let self = this;
     let brush = d3.brushX().extent([[0,45],[this.svgWidth,75]]).on("end", function(){
         let selected = d3.event.selection;
-        let min  = xScale.invert(selected[0]);
-        let max  = xScale.invert(selected[1]);
-        let selectedStates = []
-        for (var i = 0; i < xPositions.length-1; i++) {
+        if(selected!==null){
+            let min  = xScale.invert(selected[0]);
+            let max  = xScale.invert(selected[1]);
+            let selectedStates = []
+            for (var i = 0; i < xPositions.length-1; i++) {
             // selecting the states even if half portion is inside brush selection
-            if((xPositions[i]>=min && xPositions[i+1]<=max) ||
-                (xPositions[i]<min && xPositions[i+1]>=min) ||
-                (xPositions[i]<=max && xPositions[i+1]>max)){
-                selectedStates.push(stackedData[i].State);
+                if((xPositions[i]>=min && xPositions[i+1]<=max) ||
+                    (xPositions[i]<min && xPositions[i+1]>=min) ||
+                    (xPositions[i]<=max && xPositions[i+1]>max)){
+                    selectedStates.push(stackedData[i].State);
+                }
             }
+            self.shiftChart.update(selectedStates);
         }
-        self.shiftChart.update(selectedStates);
         
     });
     this.svg.append("g").attr("class", "brush").call(brush);
